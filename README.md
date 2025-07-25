@@ -6,3 +6,5 @@ Assets will be found in either a CSV, Excel, or SQL database and contain informa
 
 Liability payments are arbitrary and chosen to represent typical policy payments done by insurance companies.
 
+Modeling will use stochastic methods to introduce randomness.
+
