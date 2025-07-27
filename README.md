@@ -8,4 +8,8 @@ Liability payments are arbitrary and chosen to represent typical policy payments
 
 Modeling will use stochastic methods to introduce randomness.
 
-TEST FROM LAPTOP
+1. Calculating present day value of future cash flows
+    - Future cash is worth less than present day cash due to inability to earn interest/reinvest over the years.
+    - To calculate how much future cash is worth in the present day, we need to sum all of the future cash payments and apply a discount rate to each one.
+    - We will be using an annual discount rate
+        - r(t) = 
