@@ -5,6 +5,31 @@ import sqlite3 as sql
 
 print("hello world")
 
+# Creating bond and liabilities classes
+
+class bond:
+    def __init__(self, n, f, c, q, m):
+        self.name = n
+        self.face = f
+        self.coupon = c
+        self.freq = q
+        self.maturity = m
+
+        
+
+
+class liabilities:
+    payment_amount = 0
+    payment_duration = 0 # This is supposed to be how long in years the payments will be occuring for
+
+
+
+# Trying to code the sql server to host the bond information
+
+
+
+
+
 # Discount rate function assumes annual compounding
 # Following formula DR = (1 + r)^-t
 def discount_rate(delta_t, rate):
@@ -23,6 +48,11 @@ def present_value(future_cash_flows):
         total_cash += i
 
     return total_cash
+
+
+
+
+
 
 ####################################################################### TESTING TESTING TESTING
 

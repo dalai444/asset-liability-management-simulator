@@ -13,3 +13,7 @@ Modeling will use stochastic methods to introduce randomness.
     - To calculate how much future cash is worth in the present day, we need to sum all of the future cash payments and apply a discount rate to each one.
     - We will be using an annual discount rate
         - r(t) = 
+
+
+2. To get our assets (bond portfolio), the first step we take is going to https://content.naic.org/cis_consumer_information.htm and searching up New York Life Insurance.
+    - Two options will appear, we chose the first one (company code 91596) since they handle the bulk of bond portfolios.
