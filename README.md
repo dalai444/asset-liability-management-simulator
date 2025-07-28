@@ -17,3 +17,4 @@ Modeling will use stochastic methods to introduce randomness.
 
 2. To get our assets (bond portfolio), the first step we take is going to https://content.naic.org/cis_consumer_information.htm and searching up New York Life Insurance.
     - Two options will appear, we chose the first one (company code 91596) since they handle the bulk of bond portfolios.
+    - <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
