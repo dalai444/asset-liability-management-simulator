@@ -2,7 +2,11 @@
 
 The goal of this project is to simulate whether a company’s assets (for this project we will use a bond portfolio) will consistently provide enough liquid cash to cover the company’s liabilities. We need to quantify the size and timing any time we are unable to cover the liabilities. The logic behind this project is what allows companies to ensure that their liabilities will be paid out regardless of changing interest rates. 
 
-Assets will be found in either a CSV, Excel, or SQL database and contain information about the bond portfolio. Bond portfolio has been selected from actual bonds that New York Life is invested into.  
+Assets will be found in either a CSV, Excel, or SQL database and contain information about the bond portfolio. I would like to find actual bonds NYL is invested into and 
+
+
+
+
 
 Liability payments are arbitrary and chosen to represent typical policy payments done by insurance companies.
 
@@ -17,3 +21,14 @@ Modeling will use stochastic methods to introduce randomness.
 
 2. To get our assets (bond portfolio), the first step we take is going to https://content.naic.org/cis_consumer_information.htm and searching up New York Life Insurance.
     - Two options will appear, we chose the first one (company code 91596) since they handle the bulk of bond portfolios.
+    - For each bond we need the following values:
+        - name
+        - principal (face)
+        - coupon
+        - frequency
+        - maturity
+    - This project creates the SQL database using Python's built in sqlite3 module
+    - Values are then pulled out of this database and stored in a array for other uses
+
+
+    

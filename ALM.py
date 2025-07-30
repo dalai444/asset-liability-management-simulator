@@ -7,7 +7,7 @@ print("hello world")
 
 # Creating bond and liabilities classes
 
-class bond:
+class Bond:
     def __init__(self, n, f, c, q, m):
         self.name = n
         self.face = f
@@ -18,7 +18,7 @@ class bond:
         
 
 
-class liabilities:
+class Liabilities:
     payment_amount = 0
     payment_duration = 0 # This is supposed to be how long in years the payments will be occuring for
 
@@ -49,12 +49,50 @@ def present_value(future_cash_flows):
 
     return total_cash
 
+# Creating the database
+def sql_database_setup():
+    conn = sql.connect('alm.db')
+    cursor = conn.cursor()
 
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS bonds (
+            bond_id INTEGER PRIMARY KEY,
+            name TEXT,
+            face_value REAL,
+            coupon_rate REAL,
+            maturity_years INTEGER
+        )
+    ''')
 
+    conn.commit()
+    conn.close()
 
+# Inserting bonds into our previously created database
+def inserting_bonds():
+    conn = sql.connect('alm.db')
+    cursor = conn.cursor()
+
+    # sample bond info
+    bonds = [
+        (1, 'bond 1', 1000, 0.05, 10),
+        (1, 'bond 2', 2000, 0.15, 15),
+        (1, 'bond 3', 1500, 0.03, 8),
+        (1, 'bond 4', 1250, 0.05, 11),
+        (1, 'bond 5', 1300, 0.07, 13),
+    ]
+
+    conn.commit()
+    conn.close()
 
 ####################################################################### TESTING TESTING TESTING
 
-future_cash_flows = [10000, 10000, 10000]
-print(present_value(future_cash_flows))
+
+if __name__ == "__main__":
+    future_cash_flows = [10000, 10000, 10000]
+    print(present_value(future_cash_flows))
+
+    sql_database_setup()
+    inserting_bonds()
+
+    
