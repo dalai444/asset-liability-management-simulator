@@ -32,3 +32,4 @@ Modeling will use stochastic methods to introduce randomness.
 
 
     
+    - <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
