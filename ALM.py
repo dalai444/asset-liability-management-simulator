@@ -8,17 +8,17 @@ print("hello world")
 # Creating bond and liabilities classes
 
 class Bond:
-    def __init__(self, n, f, c, q, m):
-        self.name = n
-        self.face = f
-        self.coupon = c
-        self.freq = q
-        self.maturity = m
+    def __init__(self, id, name, face, coupon, maturity):
+        self.id = id
+        self.name = name
+        self.face = face
+        self.coupon = coupon
+        self.maturity = maturity
 
         
 
 
-class Liabilities:
+class Liability:
     payment_amount = 0
     payment_duration = 0 # This is supposed to be how long in years the payments will be occuring for
 
@@ -76,14 +76,44 @@ def inserting_bonds():
     # sample bond info
     bonds = [
         (1, 'bond 1', 1000, 0.05, 10),
-        (1, 'bond 2', 2000, 0.15, 15),
-        (1, 'bond 3', 1500, 0.03, 8),
-        (1, 'bond 4', 1250, 0.05, 11),
-        (1, 'bond 5', 1300, 0.07, 13),
+        (2, 'bond 2', 2000, 0.15, 15),
+        (3, 'bond 3', 1500, 0.03, 8),
+        (4, 'bond 4', 1250, 0.05, 11),
+        (5, 'bond 5', 1300, 0.07, 13),
     ]
 
+    # Actually putting all the bonds into the db
+    cursor.executemany('''
+            INSERT OR REPLACE INTO bonds (bond_id, name, face_value, coupon_rate, maturity_years)
+            VALUES (?, ?, ?, ?, ?)
+        ''', bonds)
+
     conn.commit()
+    conn.close() # Saving and closing
+
+# This function accesses the database and returns the bonds in an array of Bond objects
+def bond_portfolio_creation():
+    conn = sql.connect('alm.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM bonds") # SQL command to get the whole table
+    rows = cursor.fetchall()
+
+    bond_list = []
+    for row in rows:
+        bond = Bond( # Creating a bond object
+            id=row[0],
+            name=row[1],
+            face=row[2],
+            coupon=row[3],
+            maturity=row[4]   # Coordinates each value stored in db to constructor parameter of Bond class.
+        )
+        bond_list.append(bond) 
+
     conn.close()
+    return bond_list
+
+
 
 ####################################################################### TESTING TESTING TESTING
 
@@ -92,7 +122,11 @@ if __name__ == "__main__":
     future_cash_flows = [10000, 10000, 10000]
     print(present_value(future_cash_flows))
 
+    # The following two functions create our sql database and insert our bonds into it
     sql_database_setup()
     inserting_bonds()
+    # The next function pulls the bond portfolio from the sql database and stores them in an array
+    bond_portfolio = bond_portfolio_creation()
 
-    
+    for bond in bond_portfolio:
+        print(bond.name)
