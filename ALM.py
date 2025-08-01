@@ -3,6 +3,8 @@ import pandas as pd
 from datetime import date
 import sqlite3 as sql
 
+from esg import FlatRateESG
+
 print("hello world")
 
 # Creating bond and liabilities classes
@@ -15,19 +17,10 @@ class Bond:
         self.coupon = coupon
         self.maturity = maturity
 
-        
-
 
 class Liability:
     payment_amount = 0
     payment_duration = 0 # This is supposed to be how long in years the payments will be occuring for
-
-
-
-# Trying to code the sql server to host the bond information
-
-
-
 
 
 # Discount rate function assumes annual compounding
@@ -48,6 +41,7 @@ def present_value(future_cash_flows):
         total_cash += i
 
     return total_cash
+
 
 # Creating the database
 def sql_database_setup():
@@ -113,13 +107,20 @@ def bond_portfolio_creation():
     conn.close()
     return bond_list
 
+def liability_array_setup(amount, length):
+    liab = []
+    for i in range(length):
+        liab.append(amount)
+    return np.array(liab)
+
+
 
 
 ####################################################################### TESTING TESTING TESTING
 
 
 if __name__ == "__main__":
-    future_cash_flows = [10000, 10000, 10000]
+    future_cash_flows = [10000, 10000, 10000] # can possible change to numpy array
     print(present_value(future_cash_flows))
 
     # The following two functions create our sql database and insert our bonds into it
@@ -128,5 +129,11 @@ if __name__ == "__main__":
     # The next function pulls the bond portfolio from the sql database and stores them in an array
     bond_portfolio = bond_portfolio_creation()
 
-    for bond in bond_portfolio:
-        print(bond.name)
+    liability_amount = int(input("How large is the liability payment? "))
+    liability_length = int(input("How long will your liability be paid out for (years)? "))
+
+    esg = FlatRateESG(0.03)
+    print(esg.generate(5, liability_length))
+
+    liabilities = liability_array_setup(liability_amount, liability_length)
+    print(present_value(liabilities))
