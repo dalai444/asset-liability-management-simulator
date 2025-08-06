@@ -49,10 +49,6 @@ def liability_array_setup(amount, length):
 
 
 
-
-####################################################################### TESTING TESTING TESTING
-
-
 if __name__ == "__main__":
     # The following two functions create our sql database and insert our bonds into it
     sql_database_setup()
