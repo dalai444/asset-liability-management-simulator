@@ -1,40 +1,50 @@
 # asset-liability-management-simulator
 
-The goal of this project is to simulate whether a company’s assets (for this project we will use a bond portfolio) will consistently provide enough liquid cash to cover the company’s liabilities. We need to quantify the size and timing any time we are unable to cover the liabilities. The logic behind this project is what allows companies to ensure that their liabilities will be paid out regardless of changing interest rates. 
+This project is a Stochastic Asset Liability Management simulator designed to model how an insurance company manages its bond portfolio to meet long-term liabilities (e.g., annuity payouts) under varying interest rate scenarios. It aims to test whether a portfolio of bonds can adequately fund scheduled liabilities across hundreds of simulated interest rate paths that vary using a Normal (Guassian) Distribution.
 
-Assets will be found in either a CSV, Excel, or SQL database and contain information about the bond portfolio. I would like to find actual bonds NYL is invested into and 
+Key Features:
+    - Simulates 500 stochastic interest rate paths using a basic Economic Scenario Generator (ESG)
+    - Calculates the present value (pv) of asset and liability cash flows under each scenario
+    - Calculates surpluses created for each different scenario based on the incoming and outgoing cashflows
+    - Generates a histogram to help visualize surplus distributions across the 500 different interest rate paths
+    - Uses a SQL database to store and manage the bond portfolio
+
+Project Structure:
+
+ALM.py:
+    - Main driver of the simulator. Pulls everything together: generates liabilities, pulls bonds from database, runs simulations, computes present values and surpluses, and         visualizes results.
+asset.py:
+    - Generates the projected cash flow for each bond based on coupon, face value, and maturity
+bond.py:
+    - Defines the Bond class used throughout the project
+db.py:
+    - Sets up the SQL database using SQLite3 (a python package). Inserts bond data, retrieves that same bond data and stores it in an array of Bond objects.
+esg.py:
+    - Generates varying stochastic interest rates using a Normal (Guassian) Distribution, based on an originally flat rate of 3%
+graph.py:
+    - Uses matplotlib.pyplot to generate a histogram to visualize surplus data
+
+1. **Database Setup**:
+   - Initializes an SQLite database (`alm.db`) and populates it with sample bond data.
+
+2. **Bond Portfolio**:
+   - Bonds are pulled from the database and turned into cash flows using coupon and face value.
+
+3. **Liability Modeling**:
+   - A level liability payment stream (e.g., $15,000 annually for 20 years) is generated.
+
+4. **ESG (Stochastic Interest Rates)**:
+   - 500 paths of interest rates are generated with randomness (mean = 3%, std dev = 3%).
+
+5. **Present Value Calculation**:
+   - For each scenario, the present value of liabilities and assets is calculated using the stochastic rates.
+
+6. **Surplus Evaluation**:
+   - The simulator calculates the surplus (PV assets − PV liabilities) under each scenario.
+
+7. **Visualization**:
+   - A histogram shows the distribution of surplus across all interest rate paths, highlighting risk.
 
 
 
-
-
-Liability payments are arbitrary and chosen to represent typical policy payments done by insurance companies.
-
-Modeling will use stochastic methods to introduce randomness.
-
-1. Calculating present day value of future cash flows
-    - Future cash is worth less than present day cash due to inability to earn interest/reinvest over the years.
-    - To calculate how much future cash is worth in the present day, we need to sum all of the future cash payments and apply a discount rate to each one.
-    - We will be using an annual discount rate
-        - r(t) = 
-
-
-2. To get our assets (bond portfolio), the first step we take is going to https://content.naic.org/cis_consumer_information.htm and searching up New York Life Insurance.
-    - Two options will appear, we chose the first one (company code 91596) since they handle the bulk of bond portfolios.
-    - For each bond we need the following values:
-        - name
-        - principal (face)
-        - coupon
-        - frequency
-        - maturity
-    - This project creates the SQL database using Python's built in sqlite3 module
-    - Values are then pulled out of this database and stored in a array for other uses
-
-
-3. Our simulation is stochastic as it generates random noise using a Normal (Gauss) Distribution and adds it to our flat interest rate. This creates different possible scenarios of different interest rates for different   years.
-
-4. Limitations of this project:
-    - We do not calculate for reinvestment of cash earned through our bond portfolio
-
-
-    - <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
+- <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
