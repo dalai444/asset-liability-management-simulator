@@ -11,17 +11,22 @@ Key Features:
 
 Project Structure:
 
-ALM.py:
-    - Main driver of the simulator. Pulls everything together: generates liabilities, pulls bonds from database, runs simulations, computes present values and surpluses, and         visualizes results.
-asset.py:
+**ALM.py**:
+    - Main driver of the simulator. Pulls everything together: generates liabilities, pulls bonds from database, runs simulations, computes present values and surpluses, and visualizes results.
+    
+**asset.py**:
     - Generates the projected cash flow for each bond based on coupon, face value, and maturity
-bond.py:
+    
+**bond.py**:
     - Defines the Bond class used throughout the project
-db.py:
+    
+**db.py**:
     - Sets up the SQL database using SQLite3 (a python package). Inserts bond data, retrieves that same bond data and stores it in an array of Bond objects.
-esg.py:
+    
+**esg.py**:
     - Generates varying stochastic interest rates using a Normal (Guassian) Distribution, based on an originally flat rate of 3%
-graph.py:
+    
+**graph.py**:
     - Uses matplotlib.pyplot to generate a histogram to visualize surplus data
 
 1. **Database Setup**:
