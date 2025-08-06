@@ -2,6 +2,9 @@
 
 This project is a Stochastic Asset Liability Management simulator designed to model how an insurance company manages its bond portfolio to meet long-term liabilities (e.g., annuity payouts) under varying interest rate scenarios. It aims to test whether a portfolio of bonds can adequately fund scheduled liabilities across hundreds of simulated interest rate paths that vary using a Normal (Guassian) Distribution.
 
+This project integrates data from NAIC's Consumer Information Source to integrate real world data to the simulator. The real world data used is New York Life Ins & Ann Corp's 2024 Company Overview (https://content.naic.org/cis_refined_results.htm?TABLEAU=CIS_FINANCIAL&COCODE=91596&:refresh). From here we pull two key financials: total aggregate assets and liabilities. These values are $144,458,065,137 and $136,060,666,729 respectively.
+- <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
+
  ## Key Features
 
 - Simulates 500 stochastic interest rate paths using a basic Economic Scenario Generator (ESG)
@@ -26,13 +29,13 @@ This project is a Stochastic Asset Liability Management simulator designed to mo
 ## Simulation Workflow
 
 1. **Database Setup**:
-   - Initializes an SQLite database (`alm.db`) and populates it with sample bond data.
+   - Initializes an SQLite database (`alm.db`) and populates it with sample bond data based on the numbers from NYL.
 
 2. **Bond Portfolio**:
    - Bonds are pulled from the database and turned into cash flows using coupon and face value.
 
 3. **Liability Modeling**:
-   - A level liability payment stream (e.g., $15,000 annually for 20 years) is generated.
+   - A level liability payment stream (based on the data from NYL) is generated.
 
 4. **ESG (Stochastic Interest Rates)**:
    - 500 paths of interest rates are generated with randomness (mean = 3%, std dev = 3%).
@@ -51,11 +54,13 @@ This project is a Stochastic Asset Liability Management simulator designed to mo
 ## Output
 
  1. **Histogram of Surpluses**
-    - <img width="1495" height="946" alt="image" src="https://github.com/user-attachments/assets/98daf0b6-58b7-45ef-8b7a-20bc3da59ee4" />
+    - <img width="1485" height="943" alt="image" src="https://github.com/user-attachments/assets/2b7087ad-b084-4183-97ed-f56ff43d7bb7" />
+
  2. **Arrays**
     - The simulator outputs 3 arrays: Liability Present Values, Asset Present Values, and the Surplus Distribution.
   3. **Negative Surpluses**
      - The last output is the count of all of the negative surpluses, or in other words the number of times that the bond portfolio's cash flows (incoming) were not enough to cover the liability cash flows (outgoing). 
 
      
-- <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
+
+The simulation can be reproduced by installing the relevant modules (numpy and matplotlib.pyplot) assuming a Python Environment is already set up. All that is needed is to fork the repository and run 'ALM.py'.
