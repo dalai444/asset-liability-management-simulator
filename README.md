@@ -1,10 +1,10 @@
-# asset-liability-management-simulator
+# Stochastic Asset Liability Management Simulator
 
 This project is a Stochastic Asset Liability Management simulator designed to model how an insurance company manages its bond portfolio to meet long-term liabilities (e.g., annuity payouts) under varying interest rate scenarios. It aims to test whether a portfolio of bonds can adequately fund scheduled liabilities across hundreds of simulated interest rate paths that vary using a Normal (Guassian) Distribution.
 
 This project integrates data from NAIC's Consumer Information Source to integrate real world data to the simulator. The real world data used is New York Life Ins & Ann Corp's 2024 Company Overview. From here we pull two key financials: total aggregate assets and liabilities. These values are $144,458,065,137 and $136,060,666,729 respectively.
 - <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
-https://content.naic.org/cis_refined_results.htm?TABLEAU=CIS_FINANCIAL&COCODE=91596&:refresh
+- https://content.naic.org/cis_refined_results.htm?TABLEAU=CIS_FINANCIAL&COCODE=91596&:refresh
 
  ## Key Features
 
