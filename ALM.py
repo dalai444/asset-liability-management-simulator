@@ -2,21 +2,16 @@ import numpy as np
 import pandas as pd
 from datetime import date
 import sqlite3 as sql
+import matplotlib.pyplot as plt
 
-from esg import FlatRateESG
+from esg import StochasticRateESG
+from asset import bond_cashflows
+from db import sql_database_setup, inserting_bonds, bond_portfolio_creation
+from graph import visualizing_data
 
 print("hello world")
 
 # Creating bond and liabilities classes
-
-class Bond:
-    def __init__(self, id, name, face, coupon, maturity):
-        self.id = id
-        self.name = name
-        self.face = face
-        self.coupon = coupon
-        self.maturity = maturity
-
 
 class Liability:
     payment_amount = 0
@@ -30,7 +25,7 @@ def discount_rate(delta_t, rate):
     DR = (DR ** (-1*delta_t))
     return DR
 
-def present_value(future_cash_flows):
+def present_value_flat(future_cash_flows):
     # Creates an array of the future cash flows, with each of the values changed to represent their current values
     discounted_cash_flows = []
     for i in range(len(future_cash_flows)):
@@ -42,70 +37,11 @@ def present_value(future_cash_flows):
 
     return total_cash
 
+def present_value_stochastic(future_cash_flows, rate_path):
+    pv = sum(cf * (1 + r)**(-t) 
+         for t, (cf, r) in enumerate(zip(future_cash_flows, rate_path), start=1))
+    return pv
 
-# Creating the database
-def sql_database_setup():
-    conn = sql.connect('alm.db')
-    cursor = conn.cursor()
-
-
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS bonds (
-            bond_id INTEGER PRIMARY KEY,
-            name TEXT,
-            face_value REAL,
-            coupon_rate REAL,
-            maturity_years INTEGER
-        )
-    ''')
-
-    conn.commit()
-    conn.close()
-
-# Inserting bonds into our previously created database
-def inserting_bonds():
-    conn = sql.connect('alm.db')
-    cursor = conn.cursor()
-
-    # sample bond info
-    bonds = [
-        (1, 'bond 1', 1000, 0.05, 10),
-        (2, 'bond 2', 2000, 0.15, 15),
-        (3, 'bond 3', 1500, 0.03, 8),
-        (4, 'bond 4', 1250, 0.05, 11),
-        (5, 'bond 5', 1300, 0.07, 13),
-    ]
-
-    # Actually putting all the bonds into the db
-    cursor.executemany('''
-            INSERT OR REPLACE INTO bonds (bond_id, name, face_value, coupon_rate, maturity_years)
-            VALUES (?, ?, ?, ?, ?)
-        ''', bonds)
-
-    conn.commit()
-    conn.close() # Saving and closing
-
-# This function accesses the database and returns the bonds in an array of Bond objects
-def bond_portfolio_creation():
-    conn = sql.connect('alm.db')
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM bonds") # SQL command to get the whole table
-    rows = cursor.fetchall()
-
-    bond_list = []
-    for row in rows:
-        bond = Bond( # Creating a bond object
-            id=row[0],
-            name=row[1],
-            face=row[2],
-            coupon=row[3],
-            maturity=row[4]   # Coordinates each value stored in db to constructor parameter of Bond class.
-        )
-        bond_list.append(bond) 
-
-    conn.close()
-    return bond_list
 
 def liability_array_setup(amount, length):
     liab = []
@@ -120,20 +56,70 @@ def liability_array_setup(amount, length):
 
 
 if __name__ == "__main__":
-    future_cash_flows = [10000, 10000, 10000] # can possible change to numpy array
-    print(present_value(future_cash_flows))
-
     # The following two functions create our sql database and insert our bonds into it
     sql_database_setup()
     inserting_bonds()
     # The next function pulls the bond portfolio from the sql database and stores them in an array
     bond_portfolio = bond_portfolio_creation()
 
-    liability_amount = int(input("How large is the liability payment? "))
-    liability_length = int(input("How long will your liability be paid out for (years)? "))
+    # Here we store our liability amount and duration
+    liability_amount = 15000
+    liability_length = 20
+    # We create an array of outgoing cashflows based on the liability amount and duration
+    liability_cashflow = []
+    for i in range(liability_length):
+        liability_cashflow.append(liability_amount)
 
-    esg = FlatRateESG(0.03)
-    print(esg.generate(5, liability_length))
+    liability_cashflow = np.array(liability_cashflow) # Convert array to numpy array
 
-    liabilities = liability_array_setup(liability_amount, liability_length)
-    print(present_value(liabilities))
+
+    esg = StochasticRateESG(0.03) # Create stochastic interest rates based on a flat rate of 0.03
+    rate_paths = esg.generate(500, liability_length) # We are generating 500 different scenarios of randomly changing interest rates
+
+
+    # Array of cash flows from each bond
+    # Given a bond's information, bond_cashflows() generates an array that is the cash flow that the bond will generate
+    cashflows = [] 
+    for bond in bond_portfolio:
+        cashflows.append(bond_cashflows(bond.face, bond.coupon, 1, liability_length))
+    
+
+    # To create our surplus we create an empty array of 0s that is the same length as our liability payment
+    # We then add in all of the cash flows of each bond in our portfolio
+    # We then subtract our outgoing liability cash flows to create the surpluses
+    surplus = []
+    for i in range(len(cashflows[0])):
+        surplus.append(0)
+
+    for i in range(len(bond_portfolio)):
+        surplus = surplus + cashflows[i]
+
+    surplus = surplus - liability_cashflow
+
+    # Calculating the present value of our liabilities based on our stochastic changing interest rates
+    # Doing the same for the assets
+    liab_pvs = [present_value_stochastic(liability_cashflow, path) for path in rate_paths]
+    asset_pvs_per_path = []
+    for path in rate_paths:
+        total = 0.0
+        for cf in cashflows:
+            total += present_value_stochastic(cf, path)
+        asset_pvs_per_path.append(total)
+
+    # Calculating surpluses based on assets and liabilities for changing interest rates
+    surplus_paths = [
+        asset_pvs_per_path[i] - liab_pvs[i]
+        for i in range(len(rate_paths))
+    ]
+
+    
+    print("Liability Present Values: ", liab_pvs)
+    print("Asset Present Values: ", asset_pvs_per_path)
+    print("Surplus Distribution: ", surplus_paths)
+
+    # Finding out how many scenarios in which our outgoing liability cash flows were greater than our incoming bond portfolio cash flows 
+    negatives = sum(1 for s in surplus_paths if s < 0)
+    print(f"Number of negative surplus scenarios: {negatives} out of {len(surplus_paths)}")
+
+    # Visualizing all of our data using graph.py (matplotlib.pyplot)
+    visualizing_data(surplus_paths)

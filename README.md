@@ -33,7 +33,8 @@ Modeling will use stochastic methods to introduce randomness.
 
 3. Our simulation is stochastic as it generates random noise using a Normal (Gauss) Distribution and adds it to our flat interest rate. This creates different possible scenarios of different interest rates for different   years.
 
-
+4. Limitations of this project:
+    - We do not calculate for reinvestment of cash earned through our bond portfolio
 
 
     - <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
