@@ -26,12 +26,15 @@ def inserting_bonds():
     cursor = conn.cursor()
 
     # sample bond info
+    # Bond's face values have been chosen to roughly sum to New York Life's 2024 aggregate asset holdings
+    # This value is 144,458,065,137
+    # https://content.naic.org/cis_refined_results.htm?TABLEAU=CIS_FINANCIAL&COCODE=91596&:refresh
     bonds = [
-        (1, 'bond 1', 45000, 0.025, 30),
-        (2, 'bond 2', 60000, 0.035, 10),
-        (3, 'bond 3', 67500, 0.04, 20),
-        (4, 'bond 4', 56250, 0.05, 30),
-        (5, 'bond 5', 50500, 0.045, 20),
+        (1, 'bond 1', 20636765689, 0.025, 30),
+        (2, 'bond 2', 27515687585, 0.035, 10),
+        (3, 'bond 3', 22929739654, 0.04, 20),
+        (4, 'bond 4', 34394609481, 0.05, 30),
+        (5, 'bond 5', 38980557756, 0.045, 20),
     ]
 
     # Actually inserting all the bonds into the db

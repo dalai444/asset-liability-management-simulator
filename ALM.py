@@ -9,8 +9,6 @@ from asset import bond_cashflows
 from db import sql_database_setup, inserting_bonds, bond_portfolio_creation
 from graph import visualizing_data
 
-print("hello world")
-
 # Creating bond and liabilities classes
 
 class Liability:
@@ -63,8 +61,11 @@ if __name__ == "__main__":
     bond_portfolio = bond_portfolio_creation()
 
     # Here we store our liability amount and duration
-    liability_amount = 15000
+    # Total Liabilities chosen from New York Life insurance company 2024 aggregates
+    # https://content.naic.org/cis_refined_results.htm?TABLEAU=CIS_FINANCIAL&COCODE=91596&:refresh
+    total_liabilities = 136060666729 
     liability_length = 20
+    liability_amount = total_liabilities/liability_length
     # We create an array of outgoing cashflows based on the liability amount and duration
     liability_cashflow = []
     for i in range(liability_length):
