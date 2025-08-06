@@ -48,5 +48,14 @@ This project is a Stochastic Asset Liability Management simulator designed to mo
 
 ---
 
+## Output
 
+ 1. **Histogram of Surpluses**
+    - <img width="1495" height="946" alt="image" src="https://github.com/user-attachments/assets/98daf0b6-58b7-45ef-8b7a-20bc3da59ee4" />
+ 2. **Arrays**
+    - The simulator outputs 3 arrays: Liability Present Values, Asset Present Values, and the Surplus Distribution.
+  3. **Negative Surpluses**
+     - The last output is the sum of all of the negative surpluses, or in other words the number of times that the bond portfolio's cash flows (incoming) were not enough to cover the liability cash flows (outgoing). 
+
+     
 - <img width="1732" height="1250" alt="image" src="https://github.com/user-attachments/assets/f00bbf42-6949-4f14-b0a7-8b4131530688" />
