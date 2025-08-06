@@ -63,5 +63,13 @@ This project integrates data from NAIC's Consumer Information Source to integrat
      - The last output is the count of all of the negative surpluses, or in other words the number of times that the bond portfolio's cash flows (incoming) were not enough to cover the liability cash flows (outgoing). 
 
      
+## Limitations and Assumptions
+1. This simulator uses the discount rate formula of DF = (1 + r)^-t. This formula is for a discrete annual compounding, when in reality continous or semi-annual compounding could be more viable options.
+2. Interest rates are completely random, whereas in some situations a calculated interest rate would actually be more effective (CIR, Vasicek, or Hull-White).
+3. I was unable to find any actual bond data to put into the simulator, so all values currenty chosen are arbitrary.
+4. Bonds are assumed to compound annualy, whereas in reality they often compound more frequently.
+5. This simulator does not account for reinvestment.
+6. A single liability stream is not representitive of how real liabilities work at insurance companies.
 
+---
 The simulation can be reproduced by installing the relevant modules (numpy and matplotlib.pyplot) assuming a Python Environment is already set up. All that is needed is to fork the repository and run 'ALM.py'.
