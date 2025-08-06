@@ -2,12 +2,13 @@
 
 This project is a Stochastic Asset Liability Management simulator designed to model how an insurance company manages its bond portfolio to meet long-term liabilities (e.g., annuity payouts) under varying interest rate scenarios. It aims to test whether a portfolio of bonds can adequately fund scheduled liabilities across hundreds of simulated interest rate paths that vary using a Normal (Guassian) Distribution.
 
-Key Features:
-    - Simulates 500 stochastic interest rate paths using a basic Economic Scenario Generator (ESG)
-    - Calculates the present value (pv) of asset and liability cash flows under each scenario
-    - Calculates surpluses created for each different scenario based on the incoming and outgoing cashflows
-    - Generates a histogram to help visualize surplus distributions across the 500 different interest rate paths
-    - Uses a SQL database to store and manage the bond portfolio
+ ## Key Features
+
+- Simulates 500 stochastic interest rate paths using a basic Economic Scenario Generator (ESG)
+- Calculates present value of asset and liability cash flows under each scenario
+- Assesses surplus (assets minus liabilities) distribution over time
+- Provides visual insight into risk via histogram of simulated outcomes
+- Uses an SQLite database to manage bond portfolios dynamically
 
 ## Project Structure
 
